@@ -12,7 +12,8 @@
         "fideloper/proxy": "^4.4",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
-        "ukfast/laravel-health-check": "^1.12"
+        "ukfast/laravel-health-check": "^1.12",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^1.16.15",
