@@ -88,7 +88,13 @@ class AlertController extends Controller
     public function destroy(Alert $alert): JsonResponse
     {
         try {
-            // TODO: Bloquear remoção caso exista relacionamento com qualquer entidade
+            if ($alert->incidents()->count()) {
+                return $this->createApiResponseErrors(
+                    __('messages.error.relationship'),
+                    Response::HTTP_CONFLICT
+                );
+            }
+
             $alert->delete();
         } catch (\Exception $e) {
             return $this->createApiResponseErrors(

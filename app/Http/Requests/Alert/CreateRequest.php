@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Alert;
 
 use App\Http\Requests\ApiBaseRequest;
+use App\Models\Alert;
 
 class CreateRequest extends ApiBaseRequest
 {
@@ -23,13 +24,16 @@ class CreateRequest extends ApiBaseRequest
      */
     public function rules()
     {
+        $conditions = Alert::getConstantsValuesByPrefix('CONDITION');
+        $conditions = implode(',', $conditions);
+
         return [
             'app_name' => 'required',
             'title' => 'required',
             'description' => 'required',
             'enabled' => 'required|boolean',
             'metric' => 'required',
-            'condition' => 'required|max:2',
+            'condition' => "required|max:2|in:{$conditions}",
             'threshold' => 'required|integer',
         ];
     }

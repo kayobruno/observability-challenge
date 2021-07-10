@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('alerts', 'Api\AlertController')->middleware('log.route');
+Route::resource('metrics', 'Api\MetricController')->middleware('log.route');
