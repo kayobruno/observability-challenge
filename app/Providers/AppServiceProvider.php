@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AlertDatabaseService::class, function ($app) {
             return new AlertDatabaseService(
                 env('DB_HOST', 'localhost'),
-                env('DB_DATABASE', 'laravel'),
+                env('DB_DATABASE', 'observability_challenge'),
                 env('DB_USERNAME', 'root'),
                 env('DB_PASSWORD', 'root')
             );

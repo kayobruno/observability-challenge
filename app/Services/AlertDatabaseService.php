@@ -33,6 +33,62 @@ SQL;
     }
 
     /**
+     * @param string $metricName
+     * @return array
+     */
+    public function getAlertsGroupByMetrics(string $metricName): array
+    {
+        $sql = <<<SQL
+SELECT alerts.alert_id, alerts.metric,
+       COUNT(incidents.alert_id) AS total
+FROM incidents
+    INNER JOIN alerts
+        ON incidents.alert_id = alerts.alert_id
+WHERE alerts.metric = '{$metricName}'
+GROUP BY incidents.alert_id
+SQL;
+
+        $data = [];
+        $stmt = $this->getConnection()->query($sql);
+        while ($row = $stmt->fetch()) {
+            $data[] = [
+                'alert_id' => $row['alert_id'],
+                'metric' => $row['metric'],
+                'total' => $row['total'],
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAlertsGroupByAppName(): array
+    {
+        $sql = <<<SQL
+SELECT alerts.alert_id, alerts.app_name,
+	COUNT(incidents.alert_id) AS total
+FROM incidents
+INNER JOIN alerts
+	ON incidents.alert_id = alerts.alert_id
+GROUP BY alerts.app_name
+SQL;
+
+        $data = [];
+        $stmt = $this->getConnection()->query($sql);
+        while ($row = $stmt->fetch()) {
+            $data[] = [
+                'alert_id' => $row['alert_id'],
+                'app_name' => $row['app_name'],
+                'total' => $row['total'],
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
      * @param array $row
      * @return array
      */
