@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+    db:
+        container_name: db
+        image: mysql:5.7.22
+        command: mysqld --sql_mode=""
+        restart: always
+        ports:
+            - "3306"
+        volumes:
+            - "./.docker/mysql:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_DATABASE: observability_challenge
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        networks:
+            - app_network
+
+    app:
+        build: ./
+        container_name: app
+        tty: true
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - db
+        networks:
+            - app_network
+
+    nginx:
+        container_name: nginx
+        build: ./.docker/nginx
+        restart: always
+        ports:
+            - "8001:80"
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - app
+        networks:
+            - app_network
+
+    scripts:
+        build: ./.docker/scripts
+        container_name: scripts
+        depends_on:
+            - app
+        networks:
+            - app_network
+
+networks:
+    app_network:
+        driver: bridge

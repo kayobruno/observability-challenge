@@ -238,4 +238,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Docker config
+.docker/mysql/
+
 # End of https://www.toptal.com/developers/gitignore/api/laravel,linux,macos,windows,phpstorm+all,visualstudiocode,sublimetext
